@@ -134,21 +134,22 @@ int 	main(int argc, char *argv[], char *envp[])
 	//printf("%s\n", envp[10] + 5);
 
 	int index;
-//	int id;
-//	int fd[2];
+	int id;
+	int fd[2];
 	char **path; //= envp[10] + 5;
 	char *str3;
 	char **arg;
 	
-//	pipe(fd);
+	pipe(fd);
 	arg = malloc(sizeof(char *) * argc - 1);
 	path = ft_split(envp[10] + 5, ':');
 	index = 2;
-//	id = fork();
-//	if (id == 0)
-//	{
-//		close(fd[0]);
-//		dup2(fd[1], STDOUT_FILENO);
+	id = fork();
+	if (id == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
 		while (index < argc)
 		{
 			arg[index - 2] = strdup(argv[index]);
@@ -164,8 +165,17 @@ int 	main(int argc, char *argv[], char *envp[])
 			execve(str3, arg, NULL); 
 			index++;
 		}
-//	}
-	//str3 = NULL;
+	}
+	else
+	{
+		
+		wait(NULL);
+		close(fd[1]);
+		fdi = open(sdgd);
+		dup2(fdi, 1);
+	}
+
+	str3 = NULL;
 		free(arg);
 	free(str3);
 }
