@@ -220,4 +220,4 @@ int 	main(int argc, char *argv[], char *envp[])
 	waitpid(pid1, NULL, 0);
 	free(arg);
 }
-			//printf("%s\n", arg[0]);
+//experimentar por o nr maximo de args para fazer o parsing
