@@ -162,7 +162,7 @@ int 	main(int argc, char *argv[], char *envp[])
 		printf("Error message");
 	if (pid1 > 0)
 	{
-		dup2(fd[1], STDOUT_FILENO);
+		dup2(fd[1], STDOUT_FILENO); //comentar para conseguir ver o output dos prints na consola?
 		close(fd[0]);
 		close(fd[1]);
 		index = 0;
@@ -191,7 +191,7 @@ int 	main(int argc, char *argv[], char *envp[])
 	pid2 = fork();
 	if (pid2 == 0)
 	{
-		fd[0] = open("infile.txt", O_WRONLY);
+		fd[0] = open("infile", O_WRONLY);
 		dup2(fd[0], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
