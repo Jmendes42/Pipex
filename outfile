@@ -1,0 +1,13 @@
+drwxr-xr-x  13 jmendes  2020_lisbon    442 Jul 29 05:32 .
+drwxr-xr-x   6 jmendes  2020_lisbon    204 Jul 21 17:45 ..
+drwxr-xr-x  15 jmendes  2020_lisbon    510 Jul 29 04:47 .git
+-rw-r--r--   1 jmendes  2020_lisbon  12288 Jul 29 05:27 .pipex.c.swp
+-rw-r--r--   1 jmendes  2020_lisbon   1247 Jul 29 05:31 Makefile
+-rw-r--r--   1 jmendes  2020_lisbon      0 Jul 29 01:10 infile
+-rw-r--r--   1 jmendes  2020_lisbon      0 Jul 29 05:32 outfile
+-rwxr-xr-x   1 jmendes  2020_lisbon  50304 Jul 29 05:32 pipex
+-rw-r--r--   1 jmendes  2020_lisbon   2611 Jul 29 05:26 pipex.c
+-rw-r--r--   1 jmendes  2020_lisbon   1281 Jul 29 05:22 pipex.h
+-rw-r--r--   1 jmendes  2020_lisbon   2848 Jul 29 05:32 pipex.o
+-rw-r--r--   1 jmendes  2020_lisbon   2818 Jul 29 05:22 utils.c
+-rw-r--r--   1 jmendes  2020_lisbon   2532 Jul 29 05:32 utils.o
