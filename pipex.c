@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipextest.c                                        :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmendes <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/29 05:08:14 by jmendes           #+#    #+#             */
-/*   Updated: 2021/07/29 05:26:39 by jmendes          ###   ########.fr       */
+/*   Created: 2021/07/30 11:04:49 by jmendes           #+#    #+#             */
+/*   Updated: 2021/07/30 11:06:38 by jmendes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	index;
-
-	index = 0;
-	if (n == 0)
-		return (0);
-	while (s1[index] == s2[index] && index < n - 1 && s1[index] != '\0')
-		index++;
-	return ((unsigned char)s1[index] - (unsigned char)s2[index]);
-}
 
 char	*str3join(char *path, char *command, char *c)
 {
@@ -46,21 +34,19 @@ void	command(int argc, char *argv, char *envp[])
 	str = "PATH=/usr/";
 	arg = malloc(sizeof(char *) * argc - 1);
 	index = 0;
-	while (envp[index])
+	while (envp[index++])
 	{
 		if (!ft_strncmp(envp[index], str, sizeof(str)))
 			break ;
-		index++;
 	}
 	path = ft_split(envp[index] + 6, ':');
 	arg = ft_split(argv, ' ');
 	arg[2] = NULL;
 	index = 0;
-	while (path[index])
+	while (path[index++])
 	{
 		str3 = str3join(path[index], arg[0], "/");
 		execve(str3, arg, NULL);
-		index++;
 	}
 	exit(0);
 	free(arg);
@@ -72,22 +58,21 @@ int	main(int argc, char *argv[], char *envp[])
 	int	fdi;
 	int	pid1;
 	int	pid2;
-	int	test;
 
 	if (argc != 5)
 		return (0);
 	if (pipe(fd) == -1)
-		printf("ERROR");
+		write(1, "ERROR PIPE FUCTION", 18);
 	pid1 = fork();
 	if (pid1 < 0)
-		printf("ERROR");
+		write(1, "ERROR FORK FUCTION", 19);
 	if (pid1 == 0)
 	{
-		test = open(argv[1], O_RDONLY);
-		if (test < 0)
+		fdi = open(argv[1], O_RDONLY);
+		if (fdi < 0)
 			return (0);
 		dup2(fd[1], STDOUT_FILENO);
-		dup2(test, 0);
+		dup2(fdi, 0);
 		close(fd[0]);
 		close(fd[1]);
 		command(argc, argv[2], envp);
@@ -106,7 +91,6 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	wait(NULL);
 	printf("DONE\n");
 }
