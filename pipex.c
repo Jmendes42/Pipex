@@ -6,7 +6,7 @@
 /*   By: jmendes <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 11:04:49 by jmendes           #+#    #+#             */
-/*   Updated: 2021/07/30 11:06:38 by jmendes          ###   ########.fr       */
+/*   Updated: 2021/07/30 11:30:35 by jmendes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,45 +52,52 @@ void	command(int argc, char *argv, char *envp[])
 	free(arg);
 }
 
+void	forker(int argc, char *argv[], char *envp[], int fd[2])
+{
+	int	fdi;
+
+	fdi = open(argv[1], O_RDONLY);
+	if (fdi < 0)
+		write(1, "ERROR OPEN FUCTION", 18);
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(fdi, 0);
+	close(fd[0]);
+	close(fd[1]);
+	command(argc, argv[2], envp);
+}
+
+void	forker1(int argc, char *argv[], char *envp[], int fd[2])
+{
+	int	fdi;
+
+	fdi = open(argv[4], O_WRONLY | O_TRUNC);
+	dup2(fdi, 1);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	command(argc, argv[3], envp);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	int	fd[2];
-	int	fdi;
-	int	pid1;
-	int	pid2;
+	int	pid;
 
 	if (argc != 5)
 		return (0);
 	if (pipe(fd) == -1)
 		write(1, "ERROR PIPE FUCTION", 18);
-	pid1 = fork();
-	if (pid1 < 0)
-		write(1, "ERROR FORK FUCTION", 19);
-	if (pid1 == 0)
-	{
-		fdi = open(argv[1], O_RDONLY);
-		if (fdi < 0)
-			return (0);
-		dup2(fd[1], STDOUT_FILENO);
-		dup2(fdi, 0);
-		close(fd[0]);
-		close(fd[1]);
-		command(argc, argv[2], envp);
-	}
-	pid2 = fork();
-	if (pid2 < 0)
-		return (0);
-	if (pid2 == 0)
-	{
-		fdi = open(argv[4], O_WRONLY | O_TRUNC);
-		dup2(fdi, 1);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		command(argc, argv[3], envp);
-	}
+	pid = fork();
+	if (pid < 0)
+		write(1, "ERROR FORK FUCTION", 18);
+	if (pid == 0)
+		forker(argc, argv, envp, fd);
+	pid = fork();
+	if (pid < 0)
+		write(1, "ERROR FORK FUCTION", 18);
+	if (pid == 0)
+		forker1(argc, argv, envp, fd);
 	close(fd[0]);
 	close(fd[1]);
 	wait(NULL);
-	printf("DONE\n");
 }
