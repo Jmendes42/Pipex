@@ -6,61 +6,62 @@
 /*   By: jmendes <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 11:04:49 by jmendes           #+#    #+#             */
-/*   Updated: 2021/07/30 11:30:35 by jmendes          ###   ########.fr       */
+/*   Updated: 2021/07/31 20:38:23 by jmendes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*str3join(char *path, char *command, char *c)
+int	subVerificate(int control, char *argv)
 {
-	char	*str;
-	char	*temp;
-
-	temp = ft_strjoin(path, c);
-	str = ft_strjoin(temp, command);
-	free(temp);
-	return (str);
+	if (access(argv, F_OK) != 0)
+	{
+		ft_putstr_fd("Error - Infile not found\n", 1);
+		return (-1);
+	}
+	if (access(argv, R_OK) != 0)
+	{
+		ft_putstr_fd("Error - Outfile not found\n", 1);
+		return (-1);
+	}
+	return (0);
 }
 
-void	command(int argc, char *argv, char *envp[])
+int	verificate(char *argv[], int control)
 {
-	int		index;
-	char	**path;
-	char	*str3;
-	char	*str;
-	char	**arg;
+	char	*permition;
 
-	str = "PATH=/usr/";
-	arg = malloc(sizeof(char *) * argc - 1);
-	index = 0;
-	while (envp[index++])
+	if (control == 0)
 	{
-		if (!ft_strncmp(envp[index], str, sizeof(str)))
-			break ;
+		if (subVerificate(control, argv[1]) != 0)
+			return (-1);
 	}
-	path = ft_split(envp[index] + 6, ':');
-	arg = ft_split(argv, ' ');
-	arg[2] = NULL;
-	index = 0;
-	while (path[index++])
+	else if (control == 1)
+		permition = "Error - Outfile not found\n";
+	else
+		return (-1);
+	if (access(argv[4], W_OK) != 0)
 	{
-		str3 = str3join(path[index], arg[0], "/");
-		execve(str3, arg, NULL);
+		ft_putstr_fd(permition, 1);
+		return (-1);
 	}
-	exit(0);
-	free(arg);
+	return (0);
 }
 
 void	forker(int argc, char *argv[], char *envp[], int fd[2])
 {
 	int	fdi;
 
+	if (verificate(argv, 0) != 0)
+		return ;
 	fdi = open(argv[1], O_RDONLY);
 	if (fdi < 0)
-		write(1, "ERROR OPEN FUCTION", 18);
+	{
+		ft_putstr_fd("Error - Infile didn't open", 1);
+		return ;
+	}
 	dup2(fd[1], STDOUT_FILENO);
-	dup2(fdi, 0);
+	dup2(fdi, STDIN_FILENO);
 	close(fd[0]);
 	close(fd[1]);
 	command(argc, argv[2], envp);
@@ -70,8 +71,17 @@ void	forker1(int argc, char *argv[], char *envp[], int fd[2])
 {
 	int	fdi;
 
-	fdi = open(argv[4], O_WRONLY | O_TRUNC);
-	dup2(fdi, 1);
+	if (verificate(argv, 1) != 0)
+	{
+		return ;
+	}
+	fdi = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	if (fdi < 0)
+	{
+		ft_putstr_fd("Error - Outfile didn't open", 1);
+		return ;
+	}
+	dup2(fdi, STDOUT_FILENO);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	close(fd[1]);
@@ -84,17 +94,20 @@ int	main(int argc, char *argv[], char *envp[])
 	int	pid;
 
 	if (argc != 5)
-		return (0);
+	{
+		ft_putstr_fd("Wrong input\n", 1);
+		return (-1);
+	}
 	if (pipe(fd) == -1)
-		write(1, "ERROR PIPE FUCTION", 18);
+		return (1);
 	pid = fork();
 	if (pid < 0)
-		write(1, "ERROR FORK FUCTION", 18);
+		return (1);
 	if (pid == 0)
 		forker(argc, argv, envp, fd);
 	pid = fork();
 	if (pid < 0)
-		write(1, "ERROR FORK FUCTION", 18);
+		return (1);
 	if (pid == 0)
 		forker1(argc, argv, envp, fd);
 	close(fd[0]);

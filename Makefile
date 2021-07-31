@@ -6,18 +6,19 @@
 #    By: jmendes <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/29 05:23:06 by jmendes           #+#    #+#              #
-#    Updated: 2021/07/30 11:06:55 by jmendes          ###   ########.fr        #
+#    Updated: 2021/07/31 20:36:58 by jmendes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=address
 RM = rm -f
 
 NAME = pipex
 INCLUDE = pipex.h 
 
 SRC = pipex.c\
+	  pipex1.c\
 	  utils.c\
 	  utils1.c\
 
