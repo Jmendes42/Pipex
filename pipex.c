@@ -6,7 +6,7 @@
 /*   By: jmendes <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 11:04:49 by jmendes           #+#    #+#             */
-/*   Updated: 2021/07/31 20:38:23 by jmendes          ###   ########.fr       */
+/*   Updated: 2021/08/02 15:03:02 by jmendes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@ int	verificate(char *argv[], int control)
 		permition = "Error - Outfile not found\n";
 	else
 		return (-1);
-	if (access(argv[4], W_OK) != 0)
-	{
-		ft_putstr_fd(permition, 1);
-		return (-1);
-	}
 	return (0);
 }
 
@@ -105,6 +100,7 @@ int	main(int argc, char *argv[], char *envp[])
 		return (1);
 	if (pid == 0)
 		forker(argc, argv, envp, fd);
+	wait(NULL);
 	pid = fork();
 	if (pid < 0)
 		return (1);
