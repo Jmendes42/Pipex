@@ -1,6 +1,6 @@
 # Pipex
 
-This project is a recreation of the pipe command ' | ' on the command line.
+This project is a recreation of Unix pipe command ' | ' , appends and redirections.
 
 It must be able to execute two system commands and write the results to a file.
 
