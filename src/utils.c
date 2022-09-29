@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmendes <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jmendes <jmendes@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 05:05:40 by jmendes           #+#    #+#             */
-/*   Updated: 2021/07/29 05:22:30 by jmendes          ###   ########.fr       */
+/*   Updated: 2022/09/29 03:00:15 by jmendes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	index;

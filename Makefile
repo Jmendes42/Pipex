@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmendes <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: jmendes <jmendes@student.42lisboa.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/29 05:23:06 by jmendes           #+#    #+#              #
-#    Updated: 2021/07/31 20:36:58 by jmendes          ###   ########.fr        #
+#    Updated: 2022/09/29 02:59:17 by jmendes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,7 @@ RM = rm -f
 NAME = pipex
 INCLUDE = pipex.h 
 
-SRC = pipex.c\
-	  pipex1.c\
-	  utils.c\
-	  utils1.c\
+SRC = $(wildcard ./src/*.c)
 
 OBJS = $(SRC:.c=.o)
 

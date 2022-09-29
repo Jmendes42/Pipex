@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmendes <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jmendes <jmendes@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 20:34:35 by jmendes           #+#    #+#             */
-/*   Updated: 2021/07/31 20:56:05 by jmendes          ###   ########.fr       */
+/*   Updated: 2022/09/29 03:00:10 by jmendes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 char	*str3join(char *path, char *command, char *c)
 {
